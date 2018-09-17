@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margin around the floating action button in InventoryActivity -->
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Common margin value used throughout the app -->
+    <dimen name="activity_margin">16dp</dimen>
+
+    <!-- Common margin value used in the list -->
+    <dimen name="list_item_margin">10dp</dimen>
+
+    <!-- Product image height and width -->
+    <dimen name="product_image_size">65dp</dimen>
+</resources>
