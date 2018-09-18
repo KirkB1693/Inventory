@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_margin">
@@ -9,7 +9,7 @@
         android:id="@+id/list_product_image"
         android:layout_width="@dimen/product_image_size"
         android:layout_height="@dimen/product_image_size"
-        android:src="@drawable/ic_inventory"/>
+        android:src="@drawable/ic_inventory" />
 
     <TextView
         android:id="@+id/list_product_name"
@@ -17,41 +17,43 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/list_product_image"
         android:fontFamily="sans-serif-medium"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="#2B3D4D"
-        android:text="Sample Product"
+        android:paddingBottom="@dimen/list_item_margin"
         android:paddingLeft="@dimen/list_item_margin"
-        android:paddingBottom="@dimen/list_item_margin"/>
+        android:text="Sample Product"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="#2B3D4D" />
 
     <TextView
         android:id="@+id/list_product_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/list_product_image"
         android:layout_below="@+id/list_product_name"
+        android:layout_toRightOf="@id/list_product_image"
         android:fontFamily="sans-serif"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#AEB6BD"
+        android:paddingLeft="@dimen/list_item_margin"
         android:text="Price : $20.00"
-        android:paddingLeft="@dimen/list_item_margin"/>
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="#AEB6BD" />
 
     <TextView
         android:id="@+id/list_product_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/list_product_price"
         android:layout_below="@+id/list_product_name"
+        android:layout_toRightOf="@id/list_product_price"
         android:fontFamily="sans-serif"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#AEB6BD"
         android:paddingLeft="@dimen/list_item_margin"
-        android:text="Qty : 20"/>
+        android:text="Qty : 20"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="#AEB6BD" />
 
     <Button
+        android:id="@+id/list_sale_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:onClick="onSaleClick"
-        android:text="Sale"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="Sale" />
 </RelativeLayout>

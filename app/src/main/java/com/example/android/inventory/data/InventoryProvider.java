@@ -178,10 +178,10 @@ public class InventoryProvider extends ContentProvider {
 
 
         // Check that the image is not null
-        //byte[] image = values.getAsByteArray(InventoryEntry.COLUMN_PRODUCT_NAME);
-        //if (image == null) {
-         //   throw new IllegalArgumentException("Inventory requires an image");
-        //}
+        byte[] image = values.getAsByteArray(InventoryEntry.COLUMN_PRODUCT_NAME);
+        if (image.length == 0) {
+           throw new IllegalArgumentException("Inventory requires an image");
+        }
 
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -313,7 +313,7 @@ public class InventoryProvider extends ContentProvider {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        // Insert the data to the database and get the _id number of the new row
+        // Insert the data to the database and get the number of rows updated
         int rowsUpdated = database.update(InventoryEntry.TABLE_NAME, contentValues, selection, selectionArgs);
 
         // If the rowsUpdated is 0, then the update failed. Log an error and return 0.

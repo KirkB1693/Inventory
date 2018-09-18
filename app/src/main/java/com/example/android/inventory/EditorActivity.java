@@ -165,7 +165,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
 
 
-
         });
 
         setupSpinner();
@@ -223,7 +222,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     // Gets user input and saves a new product into the database
-    private void saveInventory() {
+    private boolean saveInventory() {
         String productName = mNameEditText.getText().toString().trim();
         String productPriceString = mPriceEditText.getText().toString().trim();
         String productQuantity = mQuantityEditText.getText().toString().trim();
@@ -232,8 +231,34 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String productReorderWebsite = mWebsiteEditText.getText().toString().trim();
 
         if (productName.isEmpty() && productPriceString.isEmpty() && productQuantity.isEmpty() && productSupplier.isEmpty() && (mReorderMethod == InventoryEntry.REORDER_UNKNOWN)) {
-            return;
+            return false;
         }
+
+        if (productName.isEmpty()) {
+            // if productName is empty, prompt user to enter a product name and return to edit screen.
+            Toast.makeText(this, R.string.toast_enter_product_name, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (productQuantity.isEmpty()) {
+            // if productQuantity is empty, prompt user to enter a quantity and return to edit screen.
+            Toast.makeText(this, R.string.toast_enter_quantity, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (productPriceString.isEmpty()) {
+            // if productPriceString is empty, prompt user to enter a price and return to edit screen.
+            Toast.makeText(this, R.string.toast_enter_price, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (productSupplier.isEmpty()) {
+            // if productSupplier is empty, prompt user to enter a supplier and return to edit screen.
+            Toast.makeText(this, R.string.toast_enter_supplier, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
 
         Bitmap productImageBitmap = drawableToBitmap(mProductImage.getDrawable());
 
@@ -246,21 +271,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String newStr = productPriceString.replaceAll("[^\\d.]+", "");
             int decimalCount = 0;
             if (newStr.contains(".")) {
-                    decimalCount = newStr.length() - newStr.indexOf(".") - 1;
-                }
-                String newIntStr = newStr.replace(".", "");
-                switch (decimalCount) {
-                    case 0:
-                        productPrice = Integer.parseInt(newIntStr) * 100;
-                        break;
-                    case 1:
-                        productPrice = Integer.parseInt(newIntStr) * 10;
-                        break;
-                    default:
-                        productPrice = Integer.parseInt(newIntStr);
-                }
+                decimalCount = newStr.length() - newStr.indexOf(".") - 1;
+            }
+            String newIntStr = newStr.replace(".", "");
+            switch (decimalCount) {
+                case 0:
+                    productPrice = Integer.parseInt(newIntStr) * 100;
+                    break;
+                case 1:
+                    productPrice = Integer.parseInt(newIntStr) * 10;
+                    break;
+                default:
+                    productPrice = Integer.parseInt(newIntStr);
+            }
 
         }
+
+
+
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -287,7 +315,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, getString(R.string.product_saved), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, getString(R.string.error_saving_product), Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
@@ -312,12 +342,53 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return bitmap;
     }
 
+    public void reorderProductClicked(View view) {
+        switch (mReorderMethod) {
+            case 0:
+                Toast.makeText(this, R.string.toast_select_order_method, Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                String phone = mPhoneEditText.getText().toString().trim().replaceAll("[^\\d]+", "");
+                if (phone != null) {
+                    Intent intentPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+                    if (intentPhone.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intentPhone);
+                    } else {
+                        Toast.makeText(this, R.string.toast_missing_app, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, R.string.toast_enter_phone, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 2:
+                String website = mWebsiteEditText.getText().toString().trim();
+                if (website != null) {
+                    if (!website.startsWith("http://") && !website.startsWith("https://")) {
+                        website = "http://" + website;
+                    }
+                    Intent intentWeb = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                    if (intentWeb.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intentWeb);
+                    } else {
+                        Toast.makeText(this, R.string.toast_missing_web_app, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, R.string.toast_enter_website, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                Toast.makeText(this, R.string.toast_invalid_order_method, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode) {
+        switch (requestCode) {
             case PICK_IMAGE_ID:
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                mProductImage.setImageDrawable(new BitmapDrawable(getResources(),bitmap));
+                mProductImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -438,7 +509,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 // Save product to database
-                saveInventory();
+                if (!saveInventory()) {
+                    return false;
+                };
                 // Exit activity
                 finish();
                 return true;

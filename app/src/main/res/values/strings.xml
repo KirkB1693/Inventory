@@ -82,4 +82,17 @@
     <string name="hint_product_supplier">Supplier</string>
     <string name="hint_product_price">Price</string>
     <string name="pick_image_intent_text">Choose an image for the product</string>
+    <string name="invalid_sale">Sale not completed, can\'t have negative inventory!</string>
+    <string name="sale_complete">Sale completed!</string>
+    <string name="error_updating_sale">Error updating sale!</string>
+    <string name="toast_missing_app">You have no app available to handle a phone call</string>
+    <string name="toast_select_order_method">Need to select an order method</string>
+    <string name="toast_enter_phone">Please enter a phone number before reordering</string>
+    <string name="toast_missing_web_app">You have no app available to open a website</string>
+    <string name="toast_enter_website">Please enter a website before reordering</string>
+    <string name="toast_invalid_order_method">Your order method is invalid</string>
+    <string name="toast_enter_price">Please enter a price before saving product</string>
+    <string name="toast_enter_product_name">Please enter a product name before saving</string>
+    <string name="toast_enter_supplier">Please enter a supplier before saving</string>
+    <string name="toast_enter_quantity">Please enter a quantity before saving</string>
 </resources>
