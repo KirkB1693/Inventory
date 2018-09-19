@@ -178,8 +178,8 @@ public class InventoryProvider extends ContentProvider {
 
 
         // Check that the image is not null
-        byte[] image = values.getAsByteArray(InventoryEntry.COLUMN_PRODUCT_NAME);
-        if (image.length == 0) {
+        byte[] image = values.getAsByteArray(InventoryEntry.COLUMN_PRODUCT_IMAGE);
+        if (image == null) {
            throw new IllegalArgumentException("Inventory requires an image");
         }
 

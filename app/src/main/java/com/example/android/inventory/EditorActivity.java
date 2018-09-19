@@ -225,12 +225,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private boolean saveInventory() {
         String productName = mNameEditText.getText().toString().trim();
         String productPriceString = mPriceEditText.getText().toString().trim();
-        String productQuantity = mQuantityEditText.getText().toString().trim();
+        String productQuantityString = mQuantityEditText.getText().toString().trim();
         String productSupplier = mSupplierEditText.getText().toString().trim();
         String productReorderPhone = mPhoneEditText.getText().toString().trim();
         String productReorderWebsite = mWebsiteEditText.getText().toString().trim();
 
-        if (productName.isEmpty() && productPriceString.isEmpty() && productQuantity.isEmpty() && productSupplier.isEmpty() && (mReorderMethod == InventoryEntry.REORDER_UNKNOWN)) {
+        if (productName.isEmpty() && productPriceString.isEmpty() && productQuantityString.isEmpty() && productSupplier.isEmpty() && (mReorderMethod == InventoryEntry.REORDER_UNKNOWN)) {
             return false;
         }
 
@@ -240,7 +240,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
 
-        if (productQuantity.isEmpty()) {
+        if (productQuantityString.isEmpty()) {
             // if productQuantity is empty, prompt user to enter a quantity and return to edit screen.
             Toast.makeText(this, R.string.toast_enter_quantity, Toast.LENGTH_SHORT).show();
             return false;
@@ -266,6 +266,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         productImageBitmap.compress(Bitmap.CompressFormat.WEBP, 25, stream);
         byte[] productImage = stream.toByteArray();
 
+        // convert price to integer (remove the decimal place to represent pennies)
         int productPrice = 0;
         if (productPriceString != null) {
             String newStr = productPriceString.replaceAll("[^\\d.]+", "");
@@ -287,7 +288,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         }
 
-
+        int productQuantity = Integer.parseInt(productQuantityString);
 
 
         // Create a new map of values, where column names are the keys
@@ -611,4 +612,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         numberFormat.setMinimumFractionDigits(2);
         return numberFormat.format(BigDecimal.valueOf(price).scaleByPowerOfTen(-2));
     }
+
+    public void incrementQuantity (View view) {
+        String productQuantityString = mQuantityEditText.getText().toString().trim();
+        String result = "1";
+        if (!productQuantityString.isEmpty()) {
+            result = Integer.toString(Integer.parseInt(productQuantityString) + 1);
+        }
+        mQuantityEditText.setText(result);
+    }
+
+    public void decrementQuantity (View view) {
+        String productQuantityString = mQuantityEditText.getText().toString().trim();
+        String result = "0";
+        if (!productQuantityString.isEmpty()) {
+            int productQuantity = Integer.parseInt(productQuantityString);
+            if (productQuantity > 0){
+            result = Integer.toString(Integer.parseInt(productQuantityString) - 1);} else {
+                Toast.makeText(view.getContext(),"Quantity can't be less than 0", Toast.LENGTH_SHORT).show();
+            }
+        }
+        mQuantityEditText.setText(result);
+    }
+
 }
