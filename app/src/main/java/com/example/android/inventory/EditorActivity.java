@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -154,6 +155,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierEditText.setOnKeyListener(mKeyListener);
         mReorderMethodSpinner.setOnTouchListener(mTouchListener);
         mImageFAB.setOnTouchListener(mTouchListener);
+
+        mPhoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         // Setup FAB to open ImagePicker
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_image);
@@ -306,9 +309,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int rowsUpdated = 0;
         if (currentInventoryUri == null) {
             // Insert the new row, returning the primary key value of the new row
-            uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+            try {
+                uri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),"Product not saved : " + e,Toast.LENGTH_SHORT).show();
+            }
+
         } else {
-            rowsUpdated = getContentResolver().update(currentInventoryUri, values, null, null);
+            try {
+                rowsUpdated = getContentResolver().update(currentInventoryUri, values, null, null);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),"Product not updated : " + e,Toast.LENGTH_SHORT).show();
+            }
         }
 
 

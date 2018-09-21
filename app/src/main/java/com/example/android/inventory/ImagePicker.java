@@ -11,20 +11,27 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Based on an Image Picker by
  * Author: Mario Velasco Casquero
  * Date: 08/09/2015
  * Email: m3ario@gmail.com
+ * modified for this project to correctly rotate images from camera,
+ * and also modified to use FileProvider when getting images from the Camera to avoid crashing
  */
 public class ImagePicker {
 
@@ -160,7 +167,7 @@ public class ImagePicker {
         try {
 
             context.getContentResolver().notifyChange(imageFile, null);
-            ExifInterface exif = new ExifInterface(imageFile.getPath());
+            ExifInterface exif = getExifInterface(context, imageFile);
             int orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);
@@ -180,6 +187,26 @@ public class ImagePicker {
             e.printStackTrace();
         }
         return rotate;
+    }
+
+    @Nullable
+    public static ExifInterface getExifInterface(Context context, Uri uri) {
+        try {
+            String path = uri.toString();
+            if (path.startsWith("file://")) {
+                return new ExifInterface(path);
+            }
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (path.startsWith("content://")) {
+                    InputStream inputStream = context.getContentResolver().openInputStream(uri);
+                    return new ExifInterface(inputStream);
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static int getRotationFromGallery(Context context, Uri imageUri) {

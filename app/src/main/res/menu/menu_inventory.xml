@@ -1,17 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Options menu for the InventoryActivity -->
+<?xml version="1.0" encoding="utf-8"?><!-- Options menu for the InventoryActivity -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".CatalogActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".InventoryActivity">
 
-<item
-    android:id="@+id/action_insert_dummy_data"
-    android:title="@string/action_insert_dummy_data"
-    app:showAsAction="never" />
+    <item
+        android:id="@+id/action_insert_dummy_data"
+        android:title="@string/action_insert_dummy_data"
+        app:showAsAction="never" />
 
-<item
-    android:id="@+id/action_delete_all_entries"
-    android:title="@string/action_delete_all_entries"
-    app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort"
+        android:title="Sort Inventory"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/action_sort_default"
+                android:title="Sort by Product ID (Default)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_a_to_z"
+                android:title="Sort Products by Name (A -> Z)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_z_to_a"
+                android:title="Sort Products by Name (Z -> A)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_price_low_to_high"
+                android:title="Sort Products by Price ($ to $$$$)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_price_high_to_low"
+                android:title="Sort Products by Price ($$$$ to $)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_quantity_low_to_high"
+                android:title="Sort Products by Quantity (Low to High)"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_sort_quantity_high_to_low"
+                android:title="Sort Products by Quantity (High to Low)"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_delete_all_entries"
+        android:title="@string/action_delete_all_entries"
+        app:showAsAction="never" />
 </menu>

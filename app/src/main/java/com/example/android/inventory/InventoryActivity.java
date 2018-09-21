@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +51,10 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
             InventoryEntry.COLUMN_PRODUCT_NAME,
             InventoryEntry.COLUMN_PRODUCT_PRICE,
             InventoryEntry.COLUMN_PRODUCT_QUANTITY};
+
+    // This is the sort order for the data we will retrieve
+    String sortOrder = InventoryEntry._ID + " ASC";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,15 +105,12 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
     }
 
 
-    private void onSaleClick (View view) {
-
-    }
 
     /**
      * Helper method to insert hardcoded product data into the database. For debugging purposes only.
      */
     private void insertInventory() {
-        Bitmap productImageBitmap = drawableToBitmap(getResources().getDrawable(R.drawable.placeholder_image));
+        Bitmap productImageBitmap = drawableToBitmap(ResourcesCompat.getDrawable(getResources(),R.drawable.placeholder_image, null));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         productImageBitmap.compress(Bitmap.CompressFormat.WEBP, 25, stream);
@@ -174,14 +176,43 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
             case R.id.action_insert_dummy_data:
                 insertInventory();
                 return true;
+            case R.id.action_sort_default:
+                sortOrder = InventoryEntry._ID + " ASC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_a_to_z:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_NAME + " ASC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_z_to_a:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_NAME + " DESC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_price_low_to_high:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_PRICE + " ASC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_price_high_to_low:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_PRICE + " DESC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_quantity_low_to_high:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_QUANTITY + " ASC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
+            case R.id.action_sort_quantity_high_to_low:
+                sortOrder = InventoryEntry.COLUMN_PRODUCT_QUANTITY + " DESC";
+                getLoaderManager().restartLoader(INVENTORY_LOADER, null, this);
+                return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 showDeleteConfirmationDialog();
-
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
@@ -223,7 +254,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
         return new CursorLoader(this, InventoryEntry.CONTENT_URI,
-                PROJECTION, null, null, null);
+                PROJECTION, null, null, sortOrder);
     }
 
     // Called when a previously created loader has finished loading
