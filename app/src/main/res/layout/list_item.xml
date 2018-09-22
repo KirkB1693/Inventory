@@ -8,8 +8,7 @@
     <ImageView
         android:id="@+id/list_product_image"
         android:layout_width="@dimen/product_image_size"
-        android:layout_height="@dimen/product_image_size"
-        android:src="@drawable/ic_inventory" />
+        android:layout_height="@dimen/product_image_size" />
 
     <TextView
         android:id="@+id/list_product_name"
@@ -19,7 +18,6 @@
         android:fontFamily="sans-serif-medium"
         android:paddingBottom="@dimen/list_item_margin"
         android:paddingLeft="@dimen/list_item_margin"
-        android:text="Sample Product"
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="#2B3D4D" />
 
@@ -31,7 +29,6 @@
         android:layout_toRightOf="@id/list_product_image"
         android:fontFamily="sans-serif"
         android:paddingLeft="@dimen/list_item_margin"
-        android:text="Price : $20.00"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#AEB6BD" />
 
@@ -43,7 +40,6 @@
         android:layout_toRightOf="@id/list_product_price"
         android:fontFamily="sans-serif"
         android:paddingLeft="@dimen/list_item_margin"
-        android:text="Qty : 20"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#AEB6BD" />
 
@@ -55,5 +51,5 @@
         android:layout_centerVertical="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:text="Sale" />
+        android:text="@string/button_sale" />
 </RelativeLayout>

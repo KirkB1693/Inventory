@@ -11,43 +11,43 @@
 
     <item
         android:id="@+id/action_sort"
-        android:title="Sort Inventory"
+        android:title="@string/menu_sort_inventory"
         app:showAsAction="never">
 
         <menu>
             <item
                 android:id="@+id/action_sort_default"
-                android:title="Sort by Product ID (Default)"
+                android:title="@string/menu_sort_by_product_id_default"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_a_to_z"
-                android:title="Sort Products by Name (A -> Z)"
+                android:title="@string/menu_sort_products_by_name_a_z"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_z_to_a"
-                android:title="Sort Products by Name (Z -> A)"
+                android:title="@string/menu_sort_products_by_name_z_a"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_price_low_to_high"
-                android:title="Sort Products by Price ($ to $$$$)"
+                android:title="@string/menu_sort_products_by_price_low_to_high"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_price_high_to_low"
-                android:title="Sort Products by Price ($$$$ to $)"
+                android:title="@string/menu_sort_products_by_price_high_to_low"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_quantity_low_to_high"
-                android:title="Sort Products by Quantity (Low to High)"
+                android:title="@string/menu_sort_products_by_quantity_low_to_high"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/action_sort_quantity_high_to_low"
-                android:title="Sort Products by Quantity (High to Low)"
+                android:title="@string/menu_sort_products_by_quantity_high_to_low"
                 app:showAsAction="never" />
         </menu>
     </item>

@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/activity_margin">
 
         <!-- Image category -->
@@ -27,7 +27,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <!-- Image -->
                 <ImageView
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <!-- Name field -->
                 <EditText
@@ -98,16 +98,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="horizontal"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <Button
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/layout_width_when_weight"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_item_margin"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
                     android:onClick="incrementQuantity"
-                    android:text="+" />
+                    android:text="@string/text_increment_quantity" />
 
                 <!-- Quantity field -->
                 <EditText
@@ -121,13 +121,13 @@
                     android:inputType="number" />
 
                 <Button
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/layout_width_when_weight"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_item_margin"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
                     android:onClick="decrementQuantity"
-                    android:text="-" />
+                    android:text="@string/text_decrement_quantity" />
             </LinearLayout>
         </LinearLayout>
 
@@ -149,13 +149,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <!-- Units for price ($) -->
                 <TextView
                     android:id="@+id/label_weight_units"
                     style="@style/EditorUnitsStyle"
-                    android:text="$" />
+                    android:text="@string/text_price_units_symbol" />
 
                 <!-- Price field -->
                 <EditText
@@ -188,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <!-- Name field -->
                 <EditText
@@ -219,14 +219,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/small_padding">
 
                 <!-- Method drop-down spinner -->
                 <Spinner
                     android:id="@+id/spinner_method"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:paddingRight="16dp"
+                    android:layout_height="@dimen/spinner_height"
+                    android:paddingRight="@dimen/padding_large"
                     android:spinnerMode="dropdown" />
 
                 <!-- Phone Number field -->
@@ -234,7 +234,7 @@
                     android:id="@+id/edit_product_reorder_phone"
                     style="@style/EditorFieldStyle"
                     android:layout_below="@+id/spinner_method"
-                    android:hint="Reorder Phone Number"
+                    android:hint="@string/hint_reorder_phone"
                     android:inputType="phone"
                     android:visibility="invisible" />
 
@@ -243,7 +243,7 @@
                     android:id="@+id/edit_product_reorder_website"
                     style="@style/EditorFieldStyle"
                     android:layout_below="@+id/spinner_method"
-                    android:hint="Reorder Website"
+                    android:hint="@string/hint_reorder_website"
                     android:inputType="textUri"
                     android:visibility="invisible" />
             </RelativeLayout>
@@ -261,6 +261,6 @@
             android:layout_margin="@dimen/fab_margin"
             android:backgroundTint="@color/colorAccent"
             android:onClick="reorderProductClicked"
-            android:text="Reorder Product" />
+            android:text="@string/button_reorder_product" />
     </RelativeLayout>
 </ScrollView>

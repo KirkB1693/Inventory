@@ -95,4 +95,19 @@
     <string name="toast_enter_product_name">Please enter a product name before saving</string>
     <string name="toast_enter_supplier">Please enter a supplier before saving</string>
     <string name="toast_enter_quantity">Please enter a quantity before saving</string>
+    <string name="text_increment_quantity">+</string>
+    <string name="text_decrement_quantity">-</string>
+    <string name="text_price_units_symbol">$</string>
+    <string name="hint_reorder_phone">Reorder Phone Number</string>
+    <string name="hint_reorder_website">Reorder Website</string>
+    <string name="button_reorder_product">Reorder Product</string>
+    <string name="button_sale">Sale</string>
+    <string name="menu_sort_inventory">Sort Inventory</string>
+    <string name="menu_sort_by_product_id_default">Sort by Product ID (Default)</string>
+    <string name="menu_sort_products_by_name_a_z"><![CDATA[Sort Products by Name (A -> Z)]]></string>
+    <string name="menu_sort_products_by_name_z_a"><![CDATA[Sort Products by Name (Z -> A)]]></string>
+    <string name="menu_sort_products_by_price_low_to_high">Sort Products by Price ($ to $$$$)</string>
+    <string name="menu_sort_products_by_price_high_to_low">Sort Products by Price ($$$$ to $)</string>
+    <string name="menu_sort_products_by_quantity_low_to_high">Sort Products by Quantity (Low to High)</string>
+    <string name="menu_sort_products_by_quantity_high_to_low">Sort Products by Quantity (High to Low)</string>
 </resources>

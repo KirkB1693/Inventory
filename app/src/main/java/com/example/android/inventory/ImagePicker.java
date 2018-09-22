@@ -9,12 +9,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.media.ExifInterface;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -92,11 +92,13 @@ public class ImagePicker {
             boolean isCamera = (imageReturnedIntent == null ||
                     imageReturnedIntent.getData() == null  ||
                     imageReturnedIntent.getData().toString().contains(imageFile.toString()));
-            if (isCamera) {     /** CAMERA **/
+            if (isCamera) {
+                //** CAMERA **/
                 selectedImage = FileProvider.getUriForFile(context,
                         BuildConfig.APPLICATION_ID + ".provider",
                         imageFile);
-            } else {            /** ALBUM **/
+            } else {
+                //** ALBUM **/
                 selectedImage = imageReturnedIntent.getData();
             }
             Log.d(TAG, "selectedImage: " + selectedImage);
@@ -126,12 +128,15 @@ public class ImagePicker {
             e.printStackTrace();
         }
 
-        Bitmap actuallyUsableBitmap = BitmapFactory.decodeFileDescriptor(
-                fileDescriptor.getFileDescriptor(), null, options);
+        Bitmap actuallyUsableBitmap = null;
+        if (fileDescriptor != null) {
+            actuallyUsableBitmap = BitmapFactory.decodeFileDescriptor(
+                    fileDescriptor.getFileDescriptor(), null, options);
+
 
         Log.d(TAG, options.inSampleSize + " sample method bitmap ... " +
                 actuallyUsableBitmap.getWidth() + " " + actuallyUsableBitmap.getHeight());
-
+        }
         return actuallyUsableBitmap;
     }
 
@@ -139,7 +144,7 @@ public class ImagePicker {
      * Resize to avoid using too much memory loading big images (e.g.: 2560*1920)
      **/
     private static Bitmap getImageResized(Context context, Uri selectedImage) {
-        Bitmap bm = null;
+        Bitmap bm;
         int[] sampleSizes = new int[]{5, 3, 2, 1};
         int i = 0;
         do {
@@ -168,20 +173,22 @@ public class ImagePicker {
 
             context.getContentResolver().notifyChange(imageFile, null);
             ExifInterface exif = getExifInterface(context, imageFile);
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
+            if (exif != null) {
+                int orientation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_NORMAL);
 
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotate = 270;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotate = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotate = 90;
+                        break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,8 +241,7 @@ public class ImagePicker {
         if (rotation != 0) {
             Matrix matrix = new Matrix();
             matrix.postRotate(rotation);
-            Bitmap bmOut = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-            return bmOut;
+            return Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
         }
         return bm;
     }

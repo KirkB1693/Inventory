@@ -101,11 +101,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     // the view, and we change the mInventoryHasChanged boolean to true.
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mInventoryHasChanged = true;
-            return false;
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mInventoryHasChanged = true;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    view.performClick();
+                    break;
+                default:
+                    break;
+            }
+            return true;
         }
+
     };
 
     private View.OnKeyListener mKeyListener = new View.OnKeyListener() {
@@ -159,7 +170,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPhoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         // Setup FAB to open ImagePicker
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_image);
+        FloatingActionButton fab = mImageFAB;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -270,25 +281,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         byte[] productImage = stream.toByteArray();
 
         // convert price to integer (remove the decimal place to represent pennies)
-        int productPrice = 0;
-        if (productPriceString != null) {
-            String newStr = productPriceString.replaceAll("[^\\d.]+", "");
-            int decimalCount = 0;
-            if (newStr.contains(".")) {
-                decimalCount = newStr.length() - newStr.indexOf(".") - 1;
-            }
-            String newIntStr = newStr.replace(".", "");
-            switch (decimalCount) {
-                case 0:
-                    productPrice = Integer.parseInt(newIntStr) * 100;
-                    break;
-                case 1:
-                    productPrice = Integer.parseInt(newIntStr) * 10;
-                    break;
-                default:
-                    productPrice = Integer.parseInt(newIntStr);
-            }
-
+        int productPrice;
+        String newStr = productPriceString.replaceAll("[^\\d.]+", "");
+        int decimalCount = 0;
+        if (newStr.contains(".")) {
+            decimalCount = newStr.length() - newStr.indexOf(".") - 1;
+        }
+        String newIntStr = newStr.replace(".", "");
+        switch (decimalCount) {
+            case 0:
+                productPrice = Integer.parseInt(newIntStr) * 100;
+                break;
+            case 1:
+                productPrice = Integer.parseInt(newIntStr) * 10;
+                break;
+            default:
+                productPrice = Integer.parseInt(newIntStr);
         }
 
         int productQuantity = Integer.parseInt(productQuantityString);
@@ -334,7 +342,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
@@ -375,18 +383,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 break;
             case 2:
                 String website = mWebsiteEditText.getText().toString().trim();
-                if (website != null) {
-                    if (!website.startsWith("http://") && !website.startsWith("https://")) {
-                        website = "http://" + website;
-                    }
-                    Intent intentWeb = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-                    if (intentWeb.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intentWeb);
-                    } else {
-                        Toast.makeText(this, R.string.toast_missing_web_app, Toast.LENGTH_SHORT).show();
-                    }
+                if (!website.startsWith("http://") && !website.startsWith("https://")) {
+                    website = "http://" + website;
+                }
+                Intent intentWeb = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                if (intentWeb.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intentWeb);
                 } else {
-                    Toast.makeText(this, R.string.toast_enter_website, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.toast_missing_web_app, Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -524,7 +528,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Save product to database
                 if (!saveInventory()) {
                     return false;
-                };
+                }
                 // Exit activity
                 finish();
                 return true;
@@ -570,7 +574,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor == null || (cursor != null && cursor.getCount() == 0)) {
+        if (cursor == null || cursor.getCount() == 0) {
             return;
         }
         cursor.moveToFirst();

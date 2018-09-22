@@ -11,4 +11,8 @@
 
     <!-- Product image height and width -->
     <dimen name="product_image_size">65dp</dimen>
+    <dimen name="layout_width_when_weight">0dp</dimen>
+    <dimen name="small_padding">4dp</dimen>
+    <dimen name="spinner_height">48dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
 </resources>
